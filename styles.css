@@ -1,19 +1,37 @@
 body {
     display: flex;
     justify-content: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#game {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #container {
-    width: 500px;
-    height: 500px;
+    width: 370px;
+    height: 370px;
     display: grid;
     grid-template-columns: repeat(3, 120px);
     grid-template-rows: repeat(3, 120px);
 }
 
 .box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 60px;
     background-color: lightgray;
     width: 120px;
     height: 120px;
     border: 1px solid black;
+}
+
+button {
+    align-self: center;
+    margin: 15px;
+    width: 100px;
+    height: 40px;
 }
