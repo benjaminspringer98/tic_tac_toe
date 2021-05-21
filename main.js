@@ -10,9 +10,14 @@ const Gameboard = (() => {
         _gameboardArray[position] = symbol;
     }
 
+    function resetGameBoardArray() {
+        _gameboardArray = [];
+    }
+
     return {
         getGameboardArray,
-        addToGameboardArray
+        addToGameboardArray,
+        resetGameBoardArray
 }
 })(); 
 
@@ -20,6 +25,12 @@ const GameController = (() => {
 
 document.querySelector("#startGame").addEventListener("click", playGame);
 function playGame() {
+    // hide start button and show reset button instead
+    DisplayController.hideElement(this); 
+    const resetGameButton = document.querySelector("#resetGame")
+    DisplayController.showElement(resetGameButton);
+    resetGameButton.addEventListener("click", resetGame);
+    
     const playerOne = Player("X", "Player One");
     const playerTwo = Player("O", "Player Two");
     let currentPlayer;
@@ -33,10 +44,10 @@ function playGame() {
                 return;
             } 
             Gameboard.addToGameboardArray(currentPlayer.getSymbol(), box.getAttribute("data"));
-            DisplayController.addToScreen(currentPlayer.getSymbol(), box);
+            DisplayController.refreshGameboard();
             
             if(checkForWinner(currentPlayer)) { // check for winner after every click on a field
-                alert(currentPlayer.getName() + "wins");
+                DisplayController.addToScreen(`${currentPlayer.getName()} wins!`, document.querySelector("#results"));
                 gameIsOver = true;
                 return;
             }
@@ -48,7 +59,7 @@ function playGame() {
             }
             
             if(currentTurn === 9) { // if turn is 9 and no winner has been declared the game ends in a tie
-                alert("Tie!");
+                DisplayController.addToScreen("It's a tie!", document.querySelector("#results"));
                 gameIsOver = true;
                 return;
             }
@@ -72,15 +83,40 @@ function checkForWinner(currentPlayer) {
         return currentPlayer;
     }
 }
+
+function resetGame() {
+    DisplayController.hideElement(document.querySelector("#resetGame")); 
+    DisplayController.showElement(document.querySelector("#startGame"));
+    DisplayController.addToScreen("", document.querySelector("#results"))
+    Gameboard.resetGameBoardArray();
+    DisplayController.refreshGameboard();
+}
 })();
 
 const DisplayController = (() => {  
-    function addToScreen(symbol, domElement) {
-        domElement.textContent = symbol;
+    function addToScreen(content, domElement) {
+        domElement.textContent = content;
     }
 
+    function hideElement(domElement) {
+        domElement.style.display = "none";
+    }
+
+    function showElement(domElement) {
+        domElement.style.display = "block"
+    }
+
+    function refreshGameboard() {
+        document.querySelectorAll(".box").forEach((box) => {
+        addToScreen(Gameboard.getGameboardArray()[box.getAttribute("data")], box) // display the corresponding symbol of the gameboard array in each box
+    });
+}
+
     return {
-        addToScreen
+        addToScreen,
+        hideElement,
+        showElement,
+        refreshGameboard
     }
 })();
 
