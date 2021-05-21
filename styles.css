@@ -64,3 +64,8 @@ button[id=resetGame] {
     border-radius: 3px;
     background-color: rgb(24, 135, 226);
 }
+
+button[id=resetGame]:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}

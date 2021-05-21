@@ -22,11 +22,12 @@ const Gameboard = (() => {
 })(); 
 
 const GameController = (() => {
+let currentTurn;
 
 document.querySelector("#startGame").addEventListener("click", playGame);
 function playGame() {
     // hide start button and show reset button instead
-    DisplayController.hideElement(this); 
+    DisplayController.hideElement(document.querySelector("#startGame")); 
     const resetGameButton = document.querySelector("#resetGame")
     DisplayController.showElement(resetGameButton);
     resetGameButton.addEventListener("click", resetGame);
@@ -35,7 +36,7 @@ function playGame() {
     const playerTwo = Player("O", "Player Two");
     let currentPlayer;
     let gameIsOver;
-    let currentTurn = 1;
+    currentTurn = 1;
     currentPlayer = playerOne;
 
     document.querySelectorAll(".box").forEach((box) => {
@@ -65,7 +66,7 @@ function playGame() {
             }
             currentTurn++;
         });     
-    });        
+    });     
 }
 
 // hard coded, probably not best practice:
@@ -85,11 +86,14 @@ function checkForWinner(currentPlayer) {
 }
 
 function resetGame() {
-    DisplayController.hideElement(document.querySelector("#resetGame")); 
-    DisplayController.showElement(document.querySelector("#startGame"));
+    /*DisplayController.hideElement(document.querySelector("#resetGame")); 
+    DisplayController.showElement(document.querySelector("#startGame"));*/
     DisplayController.addToScreen("", document.querySelector("#results"))
     Gameboard.resetGameBoardArray();
     DisplayController.refreshGameboard();
+    currentTurn = 1;
+    gameIsOver = false;
+    playGame();
 }
 })();
 
