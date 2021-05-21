@@ -86,14 +86,13 @@ function checkForWinner(currentPlayer) {
 }
 
 function resetGame() {
-    /*DisplayController.hideElement(document.querySelector("#resetGame")); 
-    DisplayController.showElement(document.querySelector("#startGame"));*/
     DisplayController.addToScreen("", document.querySelector("#results"))
     Gameboard.resetGameBoardArray();
     DisplayController.refreshGameboard();
     currentTurn = 1;
     gameIsOver = false;
-    playGame();
+    playGame(); /* when we first have pressed the start game button it changes to reset game for the rest of the time, so we 
+    need to call play game each time we press reset now */
 }
 })();
 
